@@ -10,10 +10,13 @@ long double MachineEpsilon() {
 }
 
 int main() {
-		for (int i = 0; i < 69; ++i) {
-			printf("-");
-		}
-		printf("\n");
+    long double x = 0, y, nexty, step, a = 0, b = 1, eps, gipsin;
+  	int n = 100, c = 1;
+		step = (b - a) / n;
+		eps = MachineEpsilon();
+		printf("|  Значение функции sinh |  ");
+		printf("   Значение ряда      |  ");
+		printf("Число итераций |\n");
 		for (int i = 1; i < n; ++i) {
 					x = x + step;
         	gipsin = sinh(x);
