@@ -27,19 +27,17 @@ struct tnode* addtree(struct tnode* p, char* w) {
   return p;
 }
 
-int c0 = 0, c1 = 0, c2 = 0;
-
-void treecount(struct tnode* p) {
+void treecount(struct tnode* p, int *nul, int *one, int *two) {
   if (p != NULL) {
     if ((p->left != NULL) && (p->right != NULL)) {
-        ++c2;
+        ++*two;
     } else if ((p->left == NULL) && (p->right == NULL)) {
-        ++c0;
+        ++*nul;
     } else {
-        ++c1;
+        ++*one;
     }
-    treecount(p->left);
-    treecount(p->right);
+    treecount(p->left, nul, one, two);
+    treecount(p->right, nul, one, two);
   }
 }
 
@@ -52,10 +50,11 @@ int main() {
     if (isalpha(word[0]))
       root = addtree(root, word);
   } while (word[0] != '0');    // условие выхода – ввод символа '0'
-  treecount(root);
-  printf(" 0 - %d\n", c0);
-  printf(" 1 - %d\n", c1);
-  printf(" 2 - %d\n", c2);
+  int nul = 0, one = 0, two = 0;
+  treecount(root, &nul, &one, &two);
+  printf(" 0 - %d\n", nul);
+  printf(" 1 - %d\n", one);
+  printf(" 2 - %d\n", two);
   getchar();
   getchar();
   return 0;
