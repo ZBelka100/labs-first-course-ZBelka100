@@ -28,9 +28,9 @@ int full(stack *);
 int pop(stack *);
 void push(stack *,int);
 int top(stack *); 
-void infix_to_postfix(char infix[],char postfix[]);
+void infixToPostfix(char infix[],char postfix[]);
  
-void infix_to_postfix(char infix[],char postfix[]) {
+void infixToPostfix(char infix[],char postfix[]) {
     stack s;
     char x,token;
     int i,j;    //i-index of infix,j-index of postfix
@@ -104,57 +104,57 @@ int top(stack *p) {
     return (p->data[p->top]);
 }
 
-void n_push(nodestack *s,tnode* x) {
+void nPush(nodestack *s,tnode* x) {
     s->top=s->top+1;
     s->data[s->top] = x;
 }
  
-void n_pop(nodestack *s) {
+void nPop(nodestack *s) {
     tnode* x;
     x=s->data[s->top];
     s->top=s->top-1;
 }
  
-tnode* n_top(nodestack *p) {
+tnode* nTop(nodestack *p) {
     return (p->data[p->top]);
 }
 
-tnode* n_print(nodestack *p) {
+tnode* nPrint(nodestack *p) {
     return (p->data[0]);
 }
 
-void n_init(nodestack *s) {
+void nInit(nodestack *s) {
     s->top=-1;
 }
 
 tnode* constract(char postfix[]) {
     nodestack s;
-    n_init(&s);
+    nInit(&s);
     int n = sizeof(&postfix)/sizeof(postfix[0]);
     for (int i = 0; i < n; ++i) {
         char c = postfix[i];
         if (c == '+' || c == '-' || c == '*' || c == '/' ) {
-            tnode* x = n_top(&s);
-            n_pop(&s);
-            tnode* y = n_top(&s);
-            n_pop(&s);
+            tnode* x = nTop(&s);
+            nPop(&s);
+            tnode* y = nTop(&s);
+            nPop(&s);
             tnode* node = (struct tnode*)malloc(sizeof(struct tnode));
             node->word = c;
             node->left = y;
             node->right = x;
-            n_push(&s, node);
+            nPush(&s, node);
         } else {
             tnode* node = (struct tnode*)malloc(sizeof(struct tnode));
             node->word = c;
             node->left = NULL;
             node->right = NULL;
-            n_push(&s, node);
+            nPush(&s, node);
         }
     }
-    return n_print(&s);
+    return nPrint(&s);
 }
 
-tnode* n_red(tnode* tree, int l) {
+tnode* multiReduce(tnode* tree, int l) {
     tnode* knode = (struct tnode*)malloc(sizeof(struct tnode));
     knode->word = '+';
     knode->left = tree;
@@ -177,24 +177,24 @@ void treeprint(tnode *tree) {
     }
 }
 
-void node_reduce(tnode* tree) {
+void nodeReduce(tnode* tree) {
     if (tree != NULL) {
         if (tree->word == '*') {
             if (isdigit(tree->left->word)) {
                 tnode* x = tree->right;
                 int l = tree->left->word - '0';
-                tree = n_red(tree->right, l);
+                tree = multiReduce(tree->right, l);
             } else if (isdigit(tree->right->word)) {
                 tnode* x = tree->left;
                 int l = tree->right->word  - '0';
-                tree = n_red(tree->left, l);
+                tree = multiReduce(tree->left, l);
             }
         }
         if (tree->word != '*') {
             printf("%c ",tree->word); //Отображаем корень дерева
         }
-        node_reduce(tree->left);
-        node_reduce(tree->right);
+        nodeReduce(tree->left);
+        nodeReduce(tree->right);
     }
 }
 
@@ -202,10 +202,10 @@ int main() {
     char infix[30],postfix[30];
     printf("Enter an infix expression(eg: 5+2*4): ");
     scanf("%s", infix);
-    infix_to_postfix(infix,postfix);
+    infixToPostfix(infix,postfix);
     printf("\nPostfix expression: %s\n",postfix);
     tnode* node = constract(postfix);
-    node_reduce(node);
+    nodeReduce(node);
     free(node);
     return 0;
 }
