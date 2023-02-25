@@ -4,7 +4,7 @@
 #include "lab26.h"
 
 
-void qu_bubble_sort(struct queue *q) {
+void quBubbleSort(struct queue *q) {
     int tmp, sw;
     for (int i = q->first; i <= q->last; i++) {
         sw = 1;
@@ -32,6 +32,6 @@ int main() {
         scanf("%d", &x);
         insert(&q, x);
     }
-    qu_bubble_sort(&q);
+    quBubbleSort(&q);
     print(&q);
 }
