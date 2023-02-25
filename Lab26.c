@@ -1,8 +1,9 @@
-#define QMAX 100
 #include "lab26.h"
 #include <stdio.h>
 #include <malloc.h>
 #include <stdlib.h>
+
+#define QMAX 100
 
 void init(struct queue *q) {
     q->first = 1;
