@@ -48,6 +48,6 @@ int removes(struct queue *q) {
     q->first++;
     return x;
 }
-int qu_size(struct queue *q) {
+int quSize(struct queue *q) {
     return q->last - q->first + 1;
 }
