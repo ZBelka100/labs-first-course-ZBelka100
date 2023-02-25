@@ -3,23 +3,20 @@
 #include <string.h>
 #include <stdlib.h>
 
-
-typedef struct tnode {                // узел дерева
-  char word;                  // указатель на строку
+typedef struct tnode {         // узел дерева
+  char word;                   // указатель на строку
   struct tnode* left;          // левый потомок
   struct tnode* right;         // правый потомок
 }tnode;
 
 #define MAX 50
  
-typedef struct stack
-{
+typedef struct stack {
     int data[MAX];
     int top;
 }stack;
 
-typedef struct nodestack
-{
+typedef struct nodestack {
     tnode* data[MAX];
     int top;
 }nodestack;
@@ -30,19 +27,16 @@ int empty(stack *);
 int full(stack *);
 int pop(stack *);
 void push(stack *,int);
-int top(stack *);   //value of the top element
+int top(stack *); 
 void infix_to_postfix(char infix[],char postfix[]);
  
-void infix_to_postfix(char infix[],char postfix[])
-{
+void infix_to_postfix(char infix[],char postfix[]) {
     stack s;
     char x,token;
     int i,j;    //i-index of infix,j-index of postfix
     init(&s);
     j=0;
- 
-    for(i=0;infix[i]!='\0';i++)
-    {
+    for(i=0;infix[i]!='\0';i++) {
         token=infix[i];
         if(isalnum(token))
             postfix[j++]=token;
@@ -53,103 +47,83 @@ void infix_to_postfix(char infix[],char postfix[])
             if(token==')')
                 while((x=pop(&s))!='(')
                       postfix[j++]=x;
-                else
-                {
-                    while(precedence(token)<=precedence(top(&s))&&!empty(&s))
-                    {
+                else {
+                    while(precedence(token)<=precedence(top(&s))&&!empty(&s)) {
                         x=pop(&s);
                         postfix[j++]=x;
                     }
                     push(&s,token);
                 }
     }
- 
-    while(!empty(&s))
-    {
+    while(!empty(&s)) {
         x=pop(&s);
         postfix[j++]=x;
     }
- 
     postfix[j]='\0';
 }
  
-int precedence(char x)
-{
+int precedence(char x) {
     if(x=='(')
         return(0);
     if(x=='+'||x=='-')
         return(1);
     if(x=='*'||x=='/'||x=='%')
         return(2);
- 
     return(3);
 }
  
-void init(stack *s)
-{
+void init(stack *s) {
     s->top=-1;
 }
  
-int empty(stack *s)
-{
+int empty(stack *s) {
     if(s->top==-1)
         return(1);
- 
     return(0);
 }
  
-int full(stack *s)
-{
+int full(stack *s) {
     if(s->top==MAX-1)
         return(1);
- 
     return(0);
 }
  
-void push(stack *s,int x)
-{
+void push(stack *s,int x) {
     s->top=s->top+1;
     s->data[s->top]=x;
 }
  
-int pop(stack *s)
-{
+int pop(stack *s) {
     int x;
     x=s->data[s->top];
     s->top=s->top-1;
     return(x);
 }
  
-int top(stack *p)
-{
+int top(stack *p) {
     return (p->data[p->top]);
 }
 
-void n_push(nodestack *s,tnode* x)
-{
+void n_push(nodestack *s,tnode* x) {
     s->top=s->top+1;
     s->data[s->top] = x;
 }
  
-void n_pop(nodestack *s)
-{
+void n_pop(nodestack *s) {
     tnode* x;
     x=s->data[s->top];
     s->top=s->top-1;
 }
  
-tnode* n_top(nodestack *p)
-{
+tnode* n_top(nodestack *p) {
     return (p->data[p->top]);
 }
 
-tnode* n_print(nodestack *p)
-{
+tnode* n_print(nodestack *p) {
     return (p->data[0]);
 }
 
-void n_init(nodestack *s)
-{
+void n_init(nodestack *s) {
     s->top=-1;
 }
 
