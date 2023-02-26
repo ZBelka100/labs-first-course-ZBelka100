@@ -10,6 +10,7 @@ struct tnode {                // узел дерева
   struct tnode* left;          // левый потомок
   struct tnode* right;         // правый потомок
 };
+
 struct tnode* addtree(struct tnode* p, char* w) {
   int cond;
   if (p == NULL) {
