@@ -25,6 +25,7 @@ struct tnode* addtree(struct tnode* p, char* w) {
     p->left = addtree(p->left, w);
   else
     p->right = addtree(p->right, w);
+  
   return p;
 }
 
